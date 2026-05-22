@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QCM · ECE</title>
+<link rel="stylesheet" href="assets/style.css">
+
+</head>
+<body>
+<div class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><div class="logo">B</div><div><div>Révisions Bac</div><div style="font-size:13px;color:#64748b;font-weight:600">QCM</div></div></a>
+    <div class="links">
+      <a href="maths.html">Maths</a>
+      <a href="physique.html">Physique-Chimie</a>
+      <a href="ece.html">ECE</a>
+      <a href="philo.html">Philo</a>
+      <a href="surprise.html">?</a>
+    </div>
+  </div>
+</div>
+
+    <div class="wrap page-head">
+      <div class="badge">QCM interactif</div>
+      <h1>QCM · ECE</h1>
+      <div class="subnav"><a href="ece.html">Retour</a></div>
+    </div>
+    <div class="wrap"><div class="card quiz-shell">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><strong id="counter"></strong><strong id="score"></strong></div>
+      <div class="progress"><div id="progressbar"></div></div>
+      <div id="question" class="question"></div>
+      <div id="options" class="options"></div>
+      <div id="feedback"></div>
+      <div class="quiz-nav">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" id="prev">← Précédente</button>
+          <button class="btn" id="check">Corriger</button>
+          <button class="btn primary" id="next">Suivante →</button>
+        </div>
+        <button class="btn soft" id="shuffle">Mélanger</button>
+      </div>
+    </div></div>
+    <script src="assets/quiz.js"></script>
+    <script>initQuiz([{"q": "En titrage conductimétrique, on repère l’équivalence grâce à…", "options": ["une rupture de pente", "une couleur unique", "une tangente horizontale", "une baisse de température"], "answer": 0, "explain": "C’est le signe le plus classique en conductimétrie."}, {"q": "Dans un circuit RC, la constante de temps vaut…", "options": ["R/C", "RC", "1/RC", "R+C"], "answer": 1, "explain": "τ = RC."}, {"q": "Pour une solution colorée diluée, la concentration peut être reliée à l’absorbance par…", "options": ["la loi de Newton", "Beer-Lambert", "Kepler", "Bernoulli"], "answer": 1, "explain": "A = kC pour une solution diluée."}, {"q": "Pour une solution ionique diluée, la conductivité peut être reliée à la concentration par…", "options": ["Kohlrausch", "Stokes", "Ohm généralisée", "Snell"], "answer": 0, "explain": "Loi de Kohlrausch."}, {"q": "Dans un dosage, à l’équivalence les réactifs sont…", "options": ["dans les proportions stœchiométriques", "toujours de même concentration", "annulés avant mélange", "inutiles"], "answer": 0, "explain": "C’est la définition de l’équivalence."}, {"q": "La solution tampon résiste à…", "options": ["une petite addition d’acide ou de base", "toute réaction chimique", "une forte chaleur seulement", "la lumière"], "answer": 0, "explain": "Elle maintient un pH voisin malgré de petits ajouts."}, {"q": "Dans un graphe de charge RC, à t=τ la tension vaut environ…", "options": ["0,37E", "0,63E", "E", "0"], "answer": 1, "explain": "En charge : 1-e^-1 ≈ 0,63."}, {"q": "Dans un graphe de décharge RC, à t=τ la tension vaut environ…", "options": ["0,37E", "0,63E", "E", "0,9E"], "answer": 0, "explain": "En décharge : e^-1 ≈ 0,37."}]);</script>
+    
+<footer><div class="wrap">Site de révision construit à partir de tes fiches, des PDF de physique-chimie/ECE et d’une mise en forme pédagogique pour réviser plus facilement.</div></footer>
+</body></html>

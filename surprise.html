@@ -1,0 +1,44 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pause et jeux</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="topbar"><div class="wrap nav"><a class="brand" href="index.html"><div class="logo">B</div><div><div>Révisions Bac</div><div class="small muted" style="font-weight:600">version finale</div></div></a><div class="links"><a class="" href="index.html">Accueil</a><a class="" href="maths.html">Maths</a><a class="" href="physique.html">Physique-Chimie</a><a class="" href="ece.html">ECE</a><a class="" href="philo.html">Philo</a><a class="active" href="surprise.html">Pause</a></div></div></div>
+<div class="wrap page-head"><div class="badge warn">Pause</div><h1>Page détente</h1><p>Pause courte. Tu souffles un peu, puis tu retournes bosser.</p></div>
+<div class="wrap section"><div class="note warning">Rappel : la pause est faite pour te relancer, pas pour t’aspirer. Au bout d’un moment, on te renvoie réviser.</div></div>
+<div class="wrap section game-grid">
+  <div class="panel game"><h3>Morpion</h3><p class="muted">Partie courte, parfaite pour 1 minute.</p><div id="ttt-status">À toi de jouer : X</div><div class="game-board ttt-grid" id="ttt"></div><div class="btns"><button class="btn" onclick="resetTTT()">Rejouer</button></div></div>
+  <div class="panel game"><h3>Memory</h3><p class="muted">Retourne les paires.</p><div id="memory-status">0 coup</div><div class="game-board memory-grid" id="memory"></div><div class="btns"><button class="btn" onclick="resetMemory()">Rejouer</button></div></div>
+  <div class="panel game"><h3>Pendu</h3><p class="muted">Version courte, mots de révision.</p><div id="hangman-lives">Vies : 6</div><div class="hangman-word" id="hangman-word"></div><div class="chips" id="hangman-letters"></div><div class="btns"><button class="btn" onclick="resetHangman()">Nouveau mot</button></div></div>
+  <div class="panel game"><h3>Démineur mini</h3><p class="muted">6×6, 6 mines.</p><div id="mine-status">Trouve les cases sûres.</div><div class="game-board mines-grid" id="mines"></div><div class="btns"><button class="btn" onclick="resetMines()">Rejouer</button></div></div>
+  <div class="panel game"><h3>Puissance 4 solo</h3><p class="muted">Partie courte contre l’ordi simple.</p><div id="connect-status">Tu joues rouge.</div><div class="game-board connect-grid" id="connect"></div><div class="btns"><button class="btn" onclick="resetConnect()">Rejouer</button></div></div>
+</div>
+<script>
+setTimeout(()=>alert('Pause terminée : pause terminée : retourne bosser un peu 🙂'), 7*60*1000);
+// Morpion
+let ttt=['','','','','','','','',''],turn='X',done=false;
+function drawTTT(){const el=document.getElementById('ttt');el.innerHTML='';ttt.forEach((v,i)=>{const b=document.createElement('button');b.className='ttt-cell';b.textContent=v;b.onclick=()=>playTTT(i);el.appendChild(b)});document.getElementById('ttt-status').textContent=done?'Partie terminée':'À toi de jouer : '+turn}
+function checkTTT(){const w=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];for(const a of w){const [i,j,k]=a;if(ttt[i]&&ttt[i]===ttt[j]&&ttt[j]===ttt[k]) return ttt[i]}return ttt.every(x=>x)?'draw':null}
+function playTTT(i){if(done||ttt[i]) return;ttt[i]=turn;const r=checkTTT();if(r){done=true;document.getElementById('ttt-status').textContent=r==='draw'?'Match nul':r+' gagne';drawTTT();return;}turn=turn==='X'?'O':'X';drawTTT();}
+function resetTTT(){ttt=['','','','','','','','',''];turn='X';done=false;drawTTT()} resetTTT();
+// Memory
+let mem=[],open=[],found=[],moves=0; const emojis=['🍎','⚡','🎯','📚','🧠','🌙','🎵','🚀'];
+function resetMemory(){mem=[...emojis,...emojis].sort(()=>Math.random()-0.5);open=[];found=[];moves=0;drawMemory()}
+function drawMemory(){const el=document.getElementById('memory');el.innerHTML='';mem.forEach((v,i)=>{const b=document.createElement('button');b.className='memory-card';b.textContent=(open.includes(i)||found.includes(i))?v:'?';b.onclick=()=>flipMemory(i);el.appendChild(b)});document.getElementById('memory-status').textContent=moves+' coup'+(moves>1?'s':'')}
+function flipMemory(i){if(open.includes(i)||found.includes(i)||open.length===2) return;open.push(i);drawMemory(); if(open.length===2){moves++; const [a,b]=open; if(mem[a]===mem[b]){found.push(a,b);open=[];drawMemory(); if(found.length===mem.length) document.getElementById('memory-status').textContent='Gagné en '+moves+' coups';} else setTimeout(()=>{open=[];drawMemory()},600)}} resetMemory();
+// Pendu
+const words=['BARYCENTRE','DERIVEE','LIBERTE','VERITE','ORBITE','LOGARITHME','INCONSCIENT']; let hw='',guessed=[],lives=6;
+function resetHangman(){hw=words[Math.floor(Math.random()*words.length)];guessed=[];lives=6;drawHangman()}
+function drawHangman(){document.getElementById('hangman-word').textContent=hw.split('').map(c=>guessed.includes(c)?c:'_').join(' ');document.getElementById('hangman-lives').textContent='Vies : '+lives; const area=document.getElementById('hangman-letters'); area.innerHTML=''; 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(c=>{const b=document.createElement('button'); b.className='chip'; b.textContent=c; b.disabled=guessed.includes(c)||lives<=0; b.onclick=()=>guess(c); area.appendChild(b)}); if(!document.getElementById('hangman-word').textContent.includes('_')) document.getElementById('hangman-lives').textContent='Bravo'; if(lives<=0) document.getElementById('hangman-lives').textContent='Perdu : '+hw;}
+function guess(c){guessed.push(c); if(!hw.includes(c)) lives--; drawHangman();} resetHangman();
+// Mines
+let mines=[],mineSet=new Set(),revealed=[];
+function resetMines(){mineSet=new Set(); while(mineSet.size<6) mineSet.add(Math.floor(Math.random()*36)); revealed=[]; drawMines(); document.getElementById('mine-status').textContent='Trouve les cases sûres.';}
+function neigh(i){const r=Math.floor(i/6),c=i%6; let n=0; for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){if(!dr&&!dc) continue; const rr=r+dr,cc=c+dc; if(rr>=0&&rr<6&&cc>=0&&cc<6&&mineSet.has(rr*6+cc)) n++;} return n;}
+function drawMines(){const el=document.getElementById('mines'); el.innerHTML=''; for(let i=0;i<36;i++){const b=document.createElement('button'); b.className='mine'; if(revealed.includes(i)){b.textContent=mineSet.has(i)?'💣':(neigh(i)||'');} b.onclick=()=>clickMine(i); el.appendChild(b)}}
+function clickMine(i){if(revealed.includes(i)) return; revealed.push(i); if(mineSet.has(i)){document.getElementById('mine-status').textContent='Boom. Rejoue.'; revealed=[...Array(36).keys()];} else if(revealed.filter(x=>!mineSet.has(x)).length===30){document.getElementById('mine-status').textContent='Gagné !';} drawMines();} resetMines();
+// Connect 4 solo simple
+let cboard=Array(42).fill(''); let cdone=false;
+function drawConnect(){const el=document.getElementById('connect');el.innerHTML=''; for(let i=0;i<42;i++){const d=document.createElement('button'); d.className='connect-cell'; d.style.background=cboard[i]||'#fff'; d.onclick=()=>playConnect(i%7); el.appendChild(d)} }
+function drop(col,color){for(let r=5;r>=0;r--){let i=r*7+col; if(!cboard[i]){cboard[i]=color; return i}} return -1}
+function lines(){return [[0,1],[1,0],[1,1],[1,-1]]}
+function winAt(i,color){let r=Math.floor(i/7),c=i%7; for(const [dr,dc] of lines()){let count=1; for(let s of [-1,1]){let rr=r+dr*s,cc=c+dc*s; while(rr>=0&&rr<6&&cc>=0&&cc<7&&cboard[rr*7+cc]===color){count++; rr+=dr*s; cc+=dc*s;}} if(count>=4) return true;} return false;}
+function playConnect(col){if(cdone) return; let i=drop(col,'#ef4444'); if(i<0) return; if(winAt(i,'#ef4444')){document.getElementById('connect-status').textContent='Tu gagnes'; cdone=true; drawConnect(); return;} let cols=[0,1,2,3,4,5,6].sort(()=>Math.random()-0.5); for(const cc of cols){let j=drop(cc,'#f59e0b'); if(j>=0){ if(winAt(j,'#f59e0b')) document.getElementById('connect-status').textContent='L’ordi gagne'; break; }} drawConnect();}
+function resetConnect(){cboard=Array(42).fill(''); cdone=false; document.getElementById('connect-status').textContent='Tu joues rouge.'; drawConnect()} resetConnect();
+</script>
+<footer><div class="wrap">Version réorganisée : un chapitre = une page, formules lisibles, navigation claire, jeux de pause et ECE enrichie.</div></footer></body></html>
